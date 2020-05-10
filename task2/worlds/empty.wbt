@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.2292975666809335 -0.9345274549863086 -0.27217836392890515 4.47548526442548
-  position 3.9539781451450082 1.6087666058356331 -0.7649768759819718
+  orientation 0.0008557180389238042 0.9982562548345765 0.059023024577556066 3.1805187673454602
+  position -0.0021663914881790425 0.2914955708635887 -1.3429694472459366
 }
 TexturedBackground {
 }
@@ -13,13 +13,181 @@ RectangleArena {
   translation 0.01 0 0
   floorSize 3.5 3.5
   wallThickness 0.02
-  wallHeight 0.3
+  wallHeight -1
 }
 Robot {
-  translation 1 0.16 0
+  translation 0 0.16 0
+  rotation 0.0005638711942497812 0.00010477024175021456 -0.9999998355362227 -0.009530830990220372
   children [
-    HingeJoint {
+    DEF ROOF HingeJoint {
       jointParameters HingeJointParameters {
+      }
+      endPoint Solid {
+        translation 0 0.12 0
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0 0.1 1
+              roughness 1
+              metalness 0
+            }
+            geometry Cone {
+              bottomRadius 0.1
+              height 0.05
+            }
+          }
+        ]
+        name "solid(3)"
+      }
+    }
+    DEF SENSORS HingeJoint {
+      jointParameters HingeJointParameters {
+      }
+      endPoint Solid {
+        translation 0 0 0.19
+        children [
+          DEF BALL_SENSOR1 HingeJoint {
+            endPoint Solid {
+              translation 0 0 -0.09
+              children [
+                LightSensor {
+                  translation 0 0 0.01
+                }
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Sphere {
+                    radius 0.01
+                  }
+                }
+              ]
+            }
+          }
+          DEF BALL_SENSOR4 HingeJoint {
+            endPoint Solid {
+              translation 0 0 -0.29
+              children [
+                LightSensor {
+                  translation 0 0 -0.01
+                  rotation 0 1 0 -3.1415853071795863
+                }
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Sphere {
+                    radius 0.01
+                  }
+                }
+              ]
+              name "solid(1)"
+            }
+          }
+          DEF BALL_SENSOR3 HingeJoint {
+            endPoint Solid {
+              translation 0.08 0 -0.25
+              children [
+                LightSensor {
+                  translation 0.00500009 0 -0.0013398
+                  rotation 0 -1 0 -2.094405307179586
+                }
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Sphere {
+                    radius 0.01
+                  }
+                }
+              ]
+              name "solid(4)"
+            }
+          }
+          DEF BALL_SENSOR2 HingeJoint {
+            endPoint Solid {
+              translation 0.08 0 -0.13
+              children [
+                LightSensor {
+                  translation 0.00499999 0 0.00865999
+                  rotation 0 -1 0 -1.0472053071795866
+                }
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Sphere {
+                    radius 0.01
+                  }
+                }
+              ]
+              name "solid(2)"
+            }
+          }
+          DEF BALL_SENSOR6 HingeJoint {
+            endPoint Solid {
+              translation -0.08 0 -0.13
+              children [
+                LightSensor {
+                  translation -0.00965926 0 -0.00258843
+                  rotation 0 1 0 -1.3089953071795861
+                }
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Sphere {
+                    radius 0.01
+                  }
+                }
+              ]
+              name "solid(5)"
+            }
+          }
+          DEF BALL_SENSOR5 HingeJoint {
+            endPoint Solid {
+              translation -0.08 0 -0.25
+              children [
+                LightSensor {
+                  translation -0.00465919 0 -0.00392793
+                  rotation -9.58979e-09 1 7.35855e-09 -1.8325853071795866
+                }
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Sphere {
+                    radius 0.01
+                  }
+                }
+              ]
+              name "solid(3)"
+            }
+          }
+        ]
+        name "solid(2)"
+      }
+    }
+    DEF WHEEL_BACK HingeJoint {
+      jointParameters HingeJointParameters {
+        position -0.00019538718944053898
+      }
+      endPoint Solid {
+        translation -0.04999999999999994 -0.11999999770943075 2.3446462583682055e-05
+        rotation 1 0 0 2.646173571269674
+        children [
+          DEF SPHERE Shape {
+            appearance PBRAppearance {
+            }
+            geometry DEF SPHERE_GEOMETRY Sphere {
+              radius 0.041
+              subdivision 2
+            }
+          }
+        ]
+        name "solid(1)"
+        boundingObject USE SPHERE
+        physics Physics {
+        }
+      }
+    }
+    DEF WHEEL_1 HingeJoint {
+      jointParameters HingeJointParameters {
+        position -2.258852742667961e-08
         anchor 0 -0.12 0.04
       }
       device [
@@ -28,8 +196,8 @@ Robot {
         }
       ]
       endPoint DEF WHEEL_21 Solid {
-        translation 0 -0.12 0.04
-        rotation 1 0 0 1.5707996938995747
+        translation 0.01999999999999997 -0.11999999954822944 0.05999999999999994
+        rotation 1 0 0 1.5707996713283428
         children [
           DEF WHEEL2 Shape {
             appearance PBRAppearance {
@@ -48,8 +216,9 @@ Robot {
         }
       }
     }
-    HingeJoint {
+    DEF WHEEL_2 HingeJoint {
       jointParameters HingeJointParameters {
+        position 2.2574829064664365e-08
         anchor 0 -0.12 -0.04
       }
       device [
@@ -58,8 +227,8 @@ Robot {
         }
       ]
       endPoint DEF WHEEL_22 Solid {
-        translation 0 -0.12 -0.04
-        rotation 1 0 0 1.5707996938995747
+        translation 0.01999999999999997 -0.11999999954850342 -0.05999999999999994
+        rotation 1 0 0 1.570799716460229
         children [
           USE WHEEL2
         ]
@@ -70,6 +239,7 @@ Robot {
     }
     DEF BODY2 Shape {
       appearance PBRAppearance {
+        baseColor 1 0.7 0
         roughness 1
         metalness 0
       }
