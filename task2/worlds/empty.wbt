@@ -1,0 +1,86 @@
+#VRML_SIM R2020a utf8
+WorldInfo {
+}
+Viewpoint {
+  orientation 0.2292975666809335 -0.9345274549863086 -0.27217836392890515 4.47548526442548
+  position 3.9539781451450082 1.6087666058356331 -0.7649768759819718
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  translation 0.01 0 0
+  floorSize 3.5 3.5
+  wallThickness 0.02
+  wallHeight 0.3
+}
+Robot {
+  translation 1 0.16 0
+  children [
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor 0 -0.12 0.04
+      }
+      device [
+        RotationalMotor {
+          name "wheel21"
+        }
+      ]
+      endPoint DEF WHEEL_21 Solid {
+        translation 0 -0.12 0.04
+        rotation 1 0 0 1.5707996938995747
+        children [
+          DEF WHEEL2 Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 1
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.01
+              radius 0.04
+            }
+          }
+        ]
+        boundingObject USE WHEEL2
+        physics Physics {
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor 0 -0.12 -0.04
+      }
+      device [
+        RotationalMotor {
+          name "wheel22"
+        }
+      ]
+      endPoint DEF WHEEL_22 Solid {
+        translation 0 -0.12 -0.04
+        rotation 1 0 0 1.5707996938995747
+        children [
+          USE WHEEL2
+        ]
+        boundingObject USE WHEEL2
+        physics Physics {
+        }
+      }
+    }
+    DEF BODY2 Shape {
+      appearance PBRAppearance {
+        roughness 1
+        metalness 0
+      }
+      geometry Cylinder {
+        height 0.2
+        radius 0.1
+      }
+    }
+  ]
+  name "robot(1)"
+  boundingObject USE BODY2
+  physics Physics {
+  }
+}
