@@ -1,0 +1,149 @@
+PROTO WebotRobot [
+  field SFVec3f    translation  0 0 0
+  field SFRotation rotation     0 1 0 0
+  field SFFloat    bodyMass     1
+]
+{
+  Robot {
+    translation IS translation
+    rotation IS rotation
+    children [
+      # list of children nodes
+     DEF BODY Shape {
+        appearance PBRAppearance {
+          baseColor 0.7 0.5 0.8
+          metalness 0
+        }
+        geometry Cylinder {
+          height 0.05
+          radius 0.1
+        }
+      }
+      Camera {
+        translation 0 0 0.1
+        rotation 0 1 0 3.14159
+        children [
+          Shape {
+            appearance PBRAppearance {
+            }
+            geometry Sphere {
+              radius 0.01
+              subdivision 2
+            }
+          }
+        ]
+        fieldOfView 1
+        width 188
+        height 120
+        far 0.4
+      }
+      Lidar {
+        translation 0 0.025 0
+        rotation 0 1 0 3.141592653589793
+        children [
+          Shape {
+            appearance PBRAppearance {
+            }
+            geometry Sphere {
+              radius 0.01
+              subdivision 2
+            }
+          }
+        ]
+        fieldOfView 6.28
+        maxRange 0.5
+      }
+      DEF CASTER_WHEEL_BACK Solid {
+        translation 0 -0.02 -0.075
+        children [
+          Shape {
+            appearance PBRAppearance {
+            }
+            geometry DEF CASTER_GEOMETRY Sphere {
+              radius 0.01
+              subdivision 2
+            }
+          }
+        ]
+        boundingObject USE CASTER_GEOMETRY
+        physics DEF CASTER_PHYSICS Physics {
+        }
+      }
+      DEF CASTER_WHEEL_FRONT Solid {
+        translation 0 -0.02 0.075
+        children [
+          Shape {
+            appearance PBRAppearance {
+            }
+            geometry DEF CASTER_GEOMETRY Sphere {
+              radius 0.01
+              subdivision 2
+            }
+          }
+        ]
+        name "solid(1)"
+        boundingObject USE CASTER_GEOMETRY
+        physics USE CASTER_PHYSICS
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          position 1.1274269149685906e-09
+          anchor -0.09 -0.01 0
+        }
+        device [
+          RotationalMotor {
+            name "right wheel motor"
+          }
+          PositionSensor {
+            name "right wheel sensor"
+          }
+        ]
+        endPoint DEF WHEEL_RIGHT Solid {
+          translation -0.09 -0.01 0
+          rotation 4.933292043793142e-09 -4.933309607347532e-09 1 1.5707999999999287
+          children [
+            DEF WHEEL_SHAPE Shape {
+              geometry Cylinder {
+                height 0.005
+                radius 0.02
+              }
+            }
+          ]
+          name "solid(3)"
+          boundingObject USE WHEEL_SHAPE
+          physics DEF WHEEL_PHYSICS Physics {
+          }
+        }
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          position -1.6661841508551552e-12
+          anchor 0.09 -0.01 0
+        }
+        device [
+          RotationalMotor {
+            name "left wheel motor"
+          }
+          PositionSensor {
+            name "left wheel sensor"
+          }
+        ]
+        endPoint DEF WHEEL_LEFT Solid {
+          translation 0.09 -0.01 0
+          rotation 5.227247701794595e-10 -5.227260192400714e-10 1 1.5707996938995077
+          children [
+            USE WHEEL_SHAPE
+          ]
+          name "solid(2)"
+          boundingObject USE WHEEL_SHAPE
+          physics USE WHEEL_PHYSICS
+        }
+      }
+    ]
+    boundingObject USE BODY
+    physics Physics {
+      density -1
+      mass IS bodyMass
+    }
+  }
+}
