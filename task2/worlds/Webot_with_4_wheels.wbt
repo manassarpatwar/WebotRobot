@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.017258699000698235 -0.9872785902261759 -0.1580605029405443 3.356366052046499
-  position 1.5883333368351709 0.48093660765231966 -1.115194588799799
+  orientation 0.06876924543165334 -0.9961918285986238 -0.053596935696838266 4.955410225401478
+  position 2.3848919549049943 0.3554901068634635 -0.030563042437283805
   follow "robot(2):camera"
   followType "None"
 }
@@ -169,7 +169,7 @@ Robot {
         position -0.00021596930764522968
       }
       endPoint Solid {
-        translation -0.04999999999999988 -0.11999999720143541 2.5916316715959557e-05
+        translation -0.04999999999999977 -0.11999999720143519 2.5916316715959513e-05
         rotation 1 0 0 2.6461529891514695
         children [
           DEF SPHERE Shape {
@@ -185,8 +185,6 @@ Robot {
         boundingObject USE SPHERE
         physics Physics {
         }
-        linearVelocity 3.159648289136553e-09 -6.199191375411838e-08 3.120148703218346e-08
-        angularVelocity 1.0163430580007433e-08 -1.4570690758565674e-07 -3.239423363351388e-08
       }
     }
     DEF WHEEL_1 HingeJoint {
@@ -196,12 +194,12 @@ Robot {
       }
       device [
         RotationalMotor {
-          name "wheel21"
+          name "right wheel motor"
         }
       ]
       endPoint DEF WHEEL_21 Solid {
         translation 0.01999999999999996 -0.11999995361954925 0.05999999999994615
-        rotation 1 0 0 1.570797374894332
+        rotation 1 0 0 1.5707973748943318
         children [
           DEF WHEEL2 Shape {
             appearance PBRAppearance {
@@ -218,8 +216,6 @@ Robot {
         boundingObject USE WHEEL2
         physics Physics {
         }
-        linearVelocity -8.11049941286264e-09 3.629829495430387e-08 -3.246718724524664e-07
-        angularVelocity -9.176663698935154e-06 -2.308711903182691e-07 -3.266761927455057e-08
       }
     }
     DEF WHEEL_2 HingeJoint {
@@ -229,11 +225,11 @@ Robot {
       }
       device [
         RotationalMotor {
-          name "wheel22"
+          name "left wheel motor"
         }
       ]
       endPoint DEF WHEEL_22 Solid {
-        translation 0.019999999999999952 -0.11999998237563432 -0.05999999999999217
+        translation 0.019999999999999952 -0.11999998237563432 -0.059999999999992226
         rotation 0.9999999999999999 0 0 1.5708005751036815
         children [
           USE WHEEL2
@@ -241,8 +237,6 @@ Robot {
         boundingObject USE WHEEL2
         physics Physics {
         }
-        linearVelocity 9.705456962274982e-09 5.695145952431078e-09 -7.967202526802703e-08
-        angularVelocity -5.458569753440263e-07 -1.534019870138341e-07 -3.257382013079334e-08
       }
     }
     DEF BODY2 Shape {
@@ -261,8 +255,7 @@ Robot {
   boundingObject USE BODY2
   physics Physics {
   }
-  linearVelocity 5.928402887601803e-09 -6.420086407949354e-08 3.955223088421549e-08
-  angularVelocity 2.040431424003497e-06 -1.2635618402606831e-07 -3.252945648744716e-08
+  controller "my_controller"
 }
 Robot {
   translation 1.161753044530221 0.029729490070962396 -0.0018228168120079393
@@ -346,7 +339,7 @@ Robot {
       ]
       endPoint DEF WHEEL_RIGHT Solid {
         translation -0.09 -0.01 0
-        rotation 4.933275514992813e-09 -4.933293077827114e-09 1 1.5707999999998663
+        rotation 4.9332755149928136e-09 -4.933293077827115e-09 1 1.5707999999998663
         children [
           DEF WHEEL_SHAPE Shape {
             geometry Cylinder {
@@ -359,8 +352,6 @@ Robot {
         boundingObject USE WHEEL_SHAPE
         physics DEF WHEEL_PHYSICS Physics {
         }
-        linearVelocity -5.9519560572889e-14 -3.2210256304239017e-07 1.2139372422470948e-16
-        angularVelocity 1.1217716942905355e-14 1.800010139011727e-15 3.0074699605827956e-12
       }
     }
     HingeJoint {
@@ -378,15 +369,13 @@ Robot {
       ]
       endPoint DEF WHEEL_LEFT Solid {
         translation 0.09 -0.01 0
-        rotation 5.23570072994503e-10 -5.235713245486487e-10 1 1.5707996938994473
+        rotation 5.202377159132063e-10 -5.202389562469383e-10 1 1.570799693899447
         children [
           USE WHEEL_SHAPE
         ]
         name "solid(2)"
         boundingObject USE WHEEL_SHAPE
         physics USE WHEEL_PHYSICS
-        linearVelocity -5.993540608227308e-14 -3.2210204567208905e-07 -7.660372358940027e-17
-        angularVelocity -4.668768281782966e-15 1.800139256050302e-15 2.9641851190339628e-12
       }
     }
   ]
@@ -396,6 +385,5 @@ Robot {
     density -1
     mass 1
   }
-  linearVelocity -8.821319314430208e-14 -3.221538667168302e-07 1.3919753829236877e-16
-  angularVelocity 2.2932050455340574e-15 1.8003076589388814e-15 2.9597138787726996e-12
+  controller "my_controller"
 }
