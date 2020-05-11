@@ -3,6 +3,14 @@ from controller import Robot
 TIME_STEP = 64
 robot = Robot()
 
+lidar = robot.getLidar("lidar")
+print("wtf am I doing")
+print(lidar)
+
+camera = robot.getCamera("camera")
+print("uuu")
+print(camera)
+
 wheels = []
 wheelsNames = ['left wheel motor', 'right wheel motor']
 for i in range(2):
