@@ -2,6 +2,7 @@ PROTO WebotRobot [
   field SFVec3f    translation  0 0 0
   field SFRotation rotation     0 1 0 0
   field SFFloat    bodyMass     1
+  field SFString   controller   ""
 ]
 {
   Robot {
@@ -145,5 +146,6 @@ PROTO WebotRobot [
       density -1
       mass IS bodyMass
     }
+    controller IS controller
   }
 }
