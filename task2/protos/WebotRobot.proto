@@ -3,6 +3,8 @@ PROTO WebotRobot [
   field SFRotation rotation     0 1 0 0
   field SFFloat    bodyMass     1
   field SFString   controller   ""
+  field SFInt32    numberOfLayers 1
+  field SFInt32    horizontalResolution 180
 ]
 {
   Robot {
@@ -51,7 +53,9 @@ PROTO WebotRobot [
             }
           }
         ]
-        fieldOfView 6.28
+        fieldOfView 3.14
+        numberOfLayers IS numberOfLayers
+        horizontalResolution IS horizontalResolution
         maxRange 0.5
       }
       DEF CASTER_WHEEL_BACK Solid {
