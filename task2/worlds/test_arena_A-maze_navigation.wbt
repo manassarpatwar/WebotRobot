@@ -1,0 +1,271 @@
+#VRML_SIM R2020a utf8
+WorldInfo {
+  basicTimeStep 16
+}
+Viewpoint {
+  orientation -0.9996841027150984 -0.01842589866957636 -0.017093303862244506 1.4961113895249771
+  position -1.5286120092587065 2.226500327883862 1.6966909230788245
+  follow "robot"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  size 3.66 3.66
+  tileSize 3.66 3.66
+  appearance PBRAppearance {
+    baseColor 0.9 0.9 0.9
+    baseColorMap ImageTexture {
+      url [
+        "test_arena_A-textures/maze_navigation_test_arena.png"
+      ]
+      repeatS FALSE
+      repeatT FALSE
+    }
+    roughness 1
+    metalness 0
+  }
+}
+DEF ARENA_WALLS Group {
+  children [
+    Solid {
+      translation 1.79 0.15 0.04
+      children [
+        DEF ARENA_WALL_SHAPE Shape {
+          appearance PBRAppearance {
+            baseColor 0.701961 0.701961 0.701961
+            roughness 1
+          }
+          geometry DEF ARENA_WALL_GEOM Box {
+            size 0.08 0.3 3.58
+          }
+        }
+      ]
+      name "wall1"
+      boundingObject USE ARENA_WALL_GEOM
+    }
+    Solid {
+      translation -0.04 0.15 1.79
+      rotation 0 1 0 1.5707996938995747
+      children [
+        USE ARENA_WALL_SHAPE
+      ]
+      name "wall2"
+      boundingObject USE ARENA_WALL_GEOM
+    }
+    Solid {
+      translation -1.79 0.15 -0.04
+      children [
+        USE ARENA_WALL_SHAPE
+      ]
+      name "wall3"
+      boundingObject USE ARENA_WALL_GEOM
+    }
+    Solid {
+      translation 0.04 0.15 -1.79
+      rotation 0 1 0 -1.5707996938995747
+      children [
+        USE ARENA_WALL_SHAPE
+      ]
+      name "wall4"
+      boundingObject USE ARENA_WALL_GEOM
+    }
+  ]
+}
+DEF MAZE_WALLS Group {
+  children [
+    MazeWall {
+      translation -1.2899999978971635 0.14989640640000024 1.5199999998122071
+      rotation 4.72633131564803e-13 1 -1.9773404010168413e-13 1.5708000173342493
+      length 0.44
+    }
+    MazeWall {
+      translation -1.2899999978973657 0.14989640639999977 1.0799999998093526
+      rotation -4.715935733596059e-13 1 1.9856178140214227e-13 1.5708000173342518
+      name "maze wall custom(1)"
+      length 0.44
+    }
+    MazeWall {
+      translation -1.0799999998107805 0.14989640640000004 0.8400000021027337
+      rotation -6.482755814275802e-13 -0.9999999999999999 -2.9318422991457924e-13 -5.324513837454046e-06
+      name "maze wall custom(2)"
+      length 0.44
+    }
+    MazeWall {
+      translation -1.5249999998107802 0.14989640640000004 0.39500000210273395
+      rotation -9.984974471780277e-13 -1 -1.5834130043510408e-12 -5.324513837462984e-06
+      name "maze wall custom(3)"
+      length 0.44
+    }
+    MazeWall {
+      translation -1.0799999998107803 0.14989640640000004 -0.04999999789726572
+      rotation 1.4972941235535772e-11 -1 -8.485498200676888e-13 -5.32451383745088e-06
+      name "maze wall custom(4)"
+      length 0.44
+    }
+    MazeWall {
+      translation -1.5249999998107802 0.14989640640000004 -0.5099989978972662
+      rotation 1.0986265616904473e-11 -0.9999999999999999 -8.439101814842578e-13 -5.324513837453664e-06
+      name "maze wall custom(5)"
+      length 0.44
+    }
+    MazeWall {
+      translation -0.8400329023352402 0.14979281279999998 0.8549996971880816
+      rotation -4.162316529281747e-15 -1 -4.162380130158263e-15 1.570863456253523
+      name "maze wall custom(6)"
+      length 0.88
+    }
+    MazeWall {
+      translation -0.8400010045144222 0.14979281280000004 -0.03499999962629143
+      rotation 1.5052182882314776e-17 -0.9999999999999999 1.6627821690977332e-17 1.5707896774593442
+      name "maze wall custom(7)"
+      length 0.88
+    }
+    MazeWall {
+      translation -0.8400030040830049 0.14981164800000005 -0.8849999996594011
+      rotation 1.6048668294003196e-17 -1 1.6613115903974148e-17 1.5707896772455472
+      name "maze wall custom(8)"
+      length 0.8
+    }
+    MazeWall {
+      translation -1.2900000039216462 0.14981871120000004 -1.3599999996718668
+      rotation -1.4678013787284006e-16 -1 -1.4790496659107547e-16 1.5707896771671137
+      name "maze wall custom(9)"
+      length 0.77
+    }
+    MazeWall {
+      translation -0.39400000392164763 0.14981871120000004 0.8970000003281331
+      rotation 1.2618540020895134e-17 -1 1.347938196076366e-17 1.5707896771671137
+      name "maze wall custom(10)"
+      length 0.77
+    }
+    MazeWall {
+      translation -0.3940010051078388 0.14976691440000003 0.0010000004189199782
+      rotation 3.320822566580416e-17 -1 3.4409372773980554e-17 1.5707896777574115
+      name "maze wall custom(11)"
+      length 0.99
+    }
+    MazeWall {
+      translation 0.08500000039015969 0.14978339520000006 -0.4859999952712249
+      rotation 2.7811197626547186e-06 -0.9999999999961328 -2.34116852687569e-10 -1.6331984510650437e-08
+      name "maze wall custom(12)"
+      length 0.92
+    }
+    MazeWall {
+      translation -0.39400000397552515 0.14981635680000005 -1.3489999996677093
+      rotation 2.6256715917052235e-17 -1 2.3876278122423217e-17 1.5707896771931131
+      name "maze wall custom(13)"
+      length 0.78
+    }
+    MazeWall {
+      translation -0.1549999998107812 0.14989640640000004 -0.9689999978972663
+      rotation -7.374910990512934e-12 -0.9999999999999999 -8.255038069693555e-13 -5.324513837450828e-06
+      name "maze wall custom(14)"
+      length 0.44
+    }
+    MazeWall {
+      translation -0.15499499981078116 0.14989640640000004 1.271000002102735
+      rotation -9.654293981308058e-13 -0.9999999999999999 -6.158991539617804e-13 -5.324513837440849e-06
+      name "maze wall custom(15)"
+      length 0.44
+    }
+    MazeWall {
+      translation 0.05500499789726606 0.14989640640000004 1.029000000189223
+      rotation 1.4810471892366044e-17 -1 6.954127775384495e-18 1.5707896765653233
+      name "maze wall custom(16)"
+      length 0.44
+    }
+    MazeWall {
+      translation 0.5389999978972664 0.14989640640000004 1.5190000001892232
+      rotation -1.2815175566460855e-17 -1 -1.213135043204893e-17 1.5707896765653233
+      name "maze wall custom(17)"
+      length 0.44
+    }
+    MazeWall {
+      translation 0.8349999978972664 0.14989640640000004 0.6090000001892217
+      rotation 3.5963372427585475e-19 -1 -6.358444490886762e-21 1.5707896765653233
+      name "maze wall custom(18)"
+      length 0.44
+    }
+    MazeWall {
+      translation 0.44300000030729086 0.14983048320000003 0.8190000036507398
+      rotation -7.503951420910136e-11 -1 6.333662833447195e-13 -5.324039262027029e-06
+      name "maze wall custom(19)"
+      length 0.72
+    }
+    MazeWall {
+      translation 0.9350000003198017 0.14982342000000004 1.309000003813595
+      rotation -8.897144743167512e-12 -1 -9.192197744892063e-13 -5.323963538455103e-06
+      name "maze wall custom(20)"
+      length 0.75
+    }
+    MazeWall {
+      translation 1.299999995378483 0.14978810400000003 0.8390000003819089
+      rotation -2.4068356131930946e-16 -1 -2.375133136519285e-16 1.5707996775134097
+      name "maze wall custom(21)"
+      length 0.9
+    }
+    MazeWall {
+      translation 0.4459095901875669 0.1498115698905917 0.3597211349762207
+      rotation 0.04044454681881247 -0.9991817129565906 0.00037831964578108183 0.018498017989301847
+      name "maze wall custom(22)"
+      length 0.8
+    }
+    MazeWall {
+      translation 0.05603324810173041 0.14991056892716767 0.15244154078903
+      rotation -2.925438360590496e-06 -0.9999999999947458 -1.396544041404601e-06 1.5706293067046062
+      name "maze wall custom(23)"
+      length 0.38
+    }
+    MazeWall {
+      translation 0.08199999850509214 0.14992230480000004 -1.1239999998577836
+      rotation 2.7655042464609106e-18 -1 4.390942247292326e-19 1.5707896767114953
+      name "maze wall custom(24)"
+      length 0.33
+    }
+    MazeWall {
+      translation 0.5359999969535372 0.14985638160000006 -1.4369999997388114
+      rotation 5.070975874180802e-17 -1 4.5164424762272534e-17 1.570789676786524
+      name "maze wall custom(25)"
+      length 0.61
+    }
+    MazeWall {
+      translation 0.5349999969535371 0.14985638160000003 -0.8099999997388112
+      rotation 8.212217627178852e-17 -1 8.092687286456568e-17 1.570789676786524
+      name "maze wall custom(26)"
+      length 0.61
+    }
+    MazeWall {
+      translation 0.5349999982295613 0.14991053280000005 -0.2699999998363779
+      rotation 9.090000597882112e-17 -1 9.714758526172813e-17 1.5707896765974958
+      name "maze wall custom(27)"
+      length 0.38
+    }
+    MazeWall {
+      translation 0.9350000003198017 0.14982342000000004 -0.08999999618640565
+      rotation 6.103469825276154e-12 -1 -6.318139917204866e-13 -5.32396353845771e-06
+      name "maze wall custom(28)"
+      length 0.75
+    }
+    MazeWall {
+      translation 1.3600000003198038 0.14982342000000004 -0.5459999961864057
+      rotation 2.3615587918536634e-11 -1 -1.0253677540296885e-12 -5.323963538458111e-06
+      name "maze wall custom(29)"
+      length 0.75
+    }
+    MazeWall {
+      translation 0.9300000003198017 0.14982342000000004 -0.9939999961864057
+      rotation 1.0682562028535935e-12 -1 -1.2331694517518294e-12 -5.323963538455108e-06
+      name "maze wall custom(30)"
+      length 0.75
+    }
+  ]
+}
+WebotRobot {
+  hidden translation_6 -0.09 -0.01 0
+  hidden translation_7 0.09 -0.01 0
+  translation -1.5230000000478001 0.02986425889189037 1.5349999999999242
+  rotation -7.966155357829173e-10 0.9999999999999999 -6.343806117116813e-13 3.14
+  controller "firefly_controller_manas"
+}

@@ -1,10 +1,13 @@
 PROTO WebotRobot [
-  field SFVec3f    translation  0 0 0
-  field SFRotation rotation     0 1 0 0
-  field SFFloat    bodyMass     1
-  field SFString   controller   ""
-  field SFInt32    numberOfLayers 1
+  field SFVec3f    translation          -1.523 0.03 1.535
+  field SFRotation rotation             0 1 0 3.14
+  field SFFloat    bodyMass             1
+  field SFString   controller           "my_controller"
+  field SFInt32    numberOfLayers       1
   field SFInt32    horizontalResolution 180
+  field SFFloat    minRange             0.1
+  field SFFloat    maxRange             0.5
+  field SFFloat    maxVelocity          100.0
 ]
 {
   Robot {
@@ -56,8 +59,12 @@ PROTO WebotRobot [
         fieldOfView 3.14
         numberOfLayers IS numberOfLayers
         horizontalResolution IS horizontalResolution
-        maxRange 0.5
+        minRange IS minRange
+        maxRange IS maxRange
       }
+      InertialUnit {
+      }
+     
       DEF CASTER_WHEEL_BACK Solid {
         translation 0 -0.02 -0.075
         children [
@@ -98,6 +105,7 @@ PROTO WebotRobot [
         device [
           RotationalMotor {
             name "right wheel motor"
+            maxVelocity IS maxVelocity
           }
           PositionSensor {
             name "right wheel sensor"
@@ -128,6 +136,7 @@ PROTO WebotRobot [
         device [
           RotationalMotor {
             name "left wheel motor"
+            maxVelocity IS maxVelocity
           }
           PositionSensor {
             name "left wheel sensor"
