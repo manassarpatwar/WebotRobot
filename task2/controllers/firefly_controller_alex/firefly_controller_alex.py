@@ -77,11 +77,11 @@ while firefly.robot.step(TIME_STEP) != -1:
             firefly.go_for(1,1,0.02)
             firefly.motor_rotate_in_degrees(15,-1,1)
         else: 
-            firefly.motor_rotate_in_degrees(10,-1,1)
+            firefly.motor_rotate_in_degrees(15,-1,1)
             firefly.go_for(1,1,0.02)
-            firefly.motor_rotate_in_degrees(10,1,-1)
+            firefly.motor_rotate_in_degrees(15,1,-1)
     else:
-        firefly.motor_rotate_in_degrees(10,-1,1)
+        firefly.motor_rotate_in_degrees(15,-1,1)
    
    
     
