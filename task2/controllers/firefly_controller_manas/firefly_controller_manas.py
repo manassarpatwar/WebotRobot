@@ -32,7 +32,7 @@ class Firefly:
         self.prevAngle = None
         self.turning = False
         self.movingFunc = self.stop
-        self.inertialUnit = robot.getInertialUnit('inertial unit')
+        self.inertialUnit = robot.getInertialUnit('robot inertial unit')
         self.target = None
         self.lidar = self.robot.getLidar("lidar")
         self.lidar.enable(TIME_STEP)

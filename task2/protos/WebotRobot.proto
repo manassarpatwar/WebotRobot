@@ -63,6 +63,9 @@ PROTO WebotRobot [
         maxRange IS maxRange
       }
       InertialUnit {
+        name "robot inertial unit"
+        xAxis FALSE
+        zAxis FALSE
       }
      
       DEF CASTER_WHEEL_BACK Solid {
