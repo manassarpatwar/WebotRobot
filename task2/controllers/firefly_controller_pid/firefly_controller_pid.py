@@ -5,14 +5,11 @@ import numpy as np
 TIME_STEP = 64
 robot = Robot()
 
-camera = robot.getCamera("camera")
-camera.enable(TIME_STEP)
-
 keyboard = Keyboard()
 keyboard.enable(10)
 
-MAX_SPEED = 50.0
-MAX_TURN_SPEED = 50.0
+MAX_SPEED = 40.0
+MAX_TURN_SPEED = 40.0
 
 class Wheel:
     def __init__(self, name, robot):
@@ -32,16 +29,54 @@ class Firefly:
 
         self.lidar = self.robot.getLidar("lidar")
         self.lidar.enable(TIME_STEP)
+        self.camera = self.robot.getCamera("camera")
+        self.camera.enable(TIME_STEP)
+        self.camera.recognitionEnable(TIME_STEP)
         self.distances = []
         self.turning = False
         
         self.error_prior = 0.0
         self.integral = 0.0
         
-        self.KP = 400
+        self.KP = 200
         self.KI = 2
         self.KD = 500
         
+        self.colors = [[0.5,0,0], 
+                        [1,0,0], 
+                        [0.5,0.5,0],
+                        [1,1,0],
+                        [0,0.5,0],
+                        [0,1,0],
+                        [0,0.5,0.5],
+                        [0,1,1],
+                        [0,0,0.5],
+                        [0,0,1],
+                        [0.5,0,0.5],
+                        [1,0,1]]
+        self.target_color = None
+        
+        
+    def getTargetColor(self):
+        while self.target_color is None:
+            objs = self.camera.getRecognitionObjects()
+            if len(objs) > 0:
+                potential_target = objs[0].get_colors()
+                if potential_target in self.colors:
+                    self.target_color = potential_target
+            self.turn()
+        front_sensor = np.min(self.distances[60:120])
+        while front_sensor < threshold:
+            self.getDistances()
+            front_sensor = np.min(self.distances[60:120])
+            factor = 1-np.interp(front_sensor, [threshold, 0.5], [0,1])
+            self.turn(factor)
+    
+    def turn(self, factor=1):
+            self.leftWheel.motor.setVelocity(MAX_TURN_SPEED*factor)
+            self.rightWheel.motor.setVelocity(-MAX_TURN_SPEED*factor)
+            self.robot.step(TIME_STEP)
+    
     def getDistances(self):
         self.distances = np.array(self.lidar.getRangeImage())
             
@@ -77,34 +112,14 @@ class Firefly:
                 self.getDistances()
                 front_sensor = np.min(self.distances[60:120])
                 factor = 1-np.interp(front_sensor, [threshold, 0.5], [0,1])
-                self.leftWheel.motor.setVelocity(MAX_TURN_SPEED*factor)
-                self.rightWheel.motor.setVelocity(-MAX_TURN_SPEED*factor)
-                self.robot.step(TIME_STEP)
+                self.turn(factor)
             self.turning = False
     
 
 firefly = Firefly(robot)
-
+# firefly.getTargetColor()
+# print(firefly.target_color)
 while firefly.robot.step(TIME_STEP) != -1:
     firefly.getDistances()    
     firefly.move()
-    # keys=[keyboard.getKey() for i in range(4)]
-        
-    # leftSpeed = 0
-    # rightSpeed = 0
-    # if (Keyboard.UP in keys):
-        # leftSpeed = MAX_SPEED
-        # rightSpeed = MAX_SPEED
-    # if (Keyboard.DOWN in keys):
-        # leftSpeed = -MAX_SPEED
-        # rightSpeed = -MAX_SPEED
-    # if (Keyboard.LEFT in keys):
-        # leftSpeed = -MAX_SPEED
-        # rightSpeed = MAX_SPEED
-    # if (Keyboard.RIGHT in keys):
-        # leftSpeed = MAX_SPEED
-        # rightSpeed = -MAX_SPEED
-        
-    # firefly.leftWheel.motor.setVelocity(leftSpeed)
-    # firefly.rightWheel.motor.setVelocity(rightSpeed)
    

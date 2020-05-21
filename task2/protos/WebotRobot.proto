@@ -38,6 +38,7 @@ PROTO WebotRobot [
             }
           }
         ]
+        recognition Recognition {}
         fieldOfView 1
         width 188
         height 120
