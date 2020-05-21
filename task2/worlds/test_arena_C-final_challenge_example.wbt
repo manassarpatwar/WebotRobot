@@ -1,0 +1,335 @@
+#VRML_SIM R2020a utf8
+WorldInfo {
+  basicTimeStep 16
+}
+Viewpoint {
+  orientation -0.9962664980851303 0.08262767860238787 0.02501462616094044 1.2182639326662905
+  position 0.0915271628281408 10.083527118525717 5.940160710194843
+  followType "Pan and Tilt Shot"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  size 3.66 3.66
+  tileSize 3.66 3.66
+  appearance PBRAppearance {
+    baseColor 0.9 0.9 0.9
+    baseColorMap ImageTexture {
+      url [
+        "test_arena_C-textures/test_arena_C-final_challenge_example.png"
+      ]
+      repeatS FALSE
+      repeatT FALSE
+    }
+    roughness 1
+    metalness 0
+  }
+}
+DEF ARENA_WALLS Group {
+  children [
+    Solid {
+      translation 1.79 0.15 0.04
+      children [
+        DEF ARENA_WALL_SHAPE Shape {
+          appearance PBRAppearance {
+            baseColor 0.701961 0.701961 0.701961
+            roughness 1
+          }
+          geometry DEF ARENA_WALL_GEOM Box {
+            size 0.08 0.3 3.58
+          }
+        }
+      ]
+      name "wall1"
+      boundingObject USE ARENA_WALL_GEOM
+    }
+    Solid {
+      translation -0.04 0.15 1.79
+      rotation 0 1 0 1.5707996938995747
+      children [
+        USE ARENA_WALL_SHAPE
+      ]
+      name "wall2"
+      boundingObject USE ARENA_WALL_GEOM
+    }
+    Solid {
+      translation -1.79 0.15 -0.04
+      children [
+        USE ARENA_WALL_SHAPE
+      ]
+      name "wall3"
+      boundingObject USE ARENA_WALL_GEOM
+    }
+    Solid {
+      translation 0.04 0.15 -1.79
+      rotation 0 1 0 -1.5707996938995747
+      children [
+        USE ARENA_WALL_SHAPE
+      ]
+      name "wall4"
+      boundingObject USE ARENA_WALL_GEOM
+    }
+  ]
+}
+DEF MAZE_WALLS Group {
+  children [
+    MazeWall {
+      translation -0.9327589997212242 0.14984460965152802 1.1951900739218335
+      rotation -0.0880576150999009 -0.9961153830770572 -4.49058573796457e-06 -5.344946399164953e-06
+      name "maze wall custom(30)"
+      length 0.66
+    }
+    MazeWall {
+      translation -0.26599999972122457 0.14984460965152802 1.195190073921834
+      rotation -0.08805761510683162 -0.9961153830764445 -4.490585814447356e-06 -5.344946399167982e-06
+      name "maze wall custom(4)"
+      length 0.66
+    }
+    MazeWall {
+      translation -0.3306689996642831 0.14981164806234418 0.7283217839278596
+      rotation 0.2657703611541749 -0.9640363660698457 -5.1793891460782025e-06 -5.522440647279648e-06
+      name "maze wall custom(1)"
+      length 0.8
+    }
+    MazeWall {
+      translation 1.3648100003118537 0.14982577445775996 0.875218995587302
+      rotation 0.010232532205682312 -0.9999476462607919 -4.7076121283250535e-06 -5.324267743862627e-06
+      name "maze wall custom(23)"
+      length 0.74
+    }
+    MazeWall {
+      translation -0.6660499997380831 0.1498540272484495 0.27787906729854134
+      rotation -0.08012410388430381 -0.9967848955296402 -4.549898084427584e-06 -5.3414450672233765e-06
+      name "maze wall custom(2)"
+      length 0.62
+    }
+    MazeWall {
+      translation 0.08706861834704707 0.14980693925111138 0.7960650003444609
+      rotation -7.418123845395871e-07 -0.9999999999994499 -7.417877600349044e-07 1.5707896772990266
+      name "maze wall custom(3)"
+      length 0.82
+    }
+    MazeWall {
+      translation -1.279000004142072 0.14990582403931244 1.0020000001671419
+      rotation 7.519968414098533e-09 -0.9999999999999998 7.553510483053282e-09 1.5707896765764644
+      name "maze wall custom(7)"
+      length 0.4
+    }
+    MazeWall {
+      translation -1.045659999832885 0.14990582403931244 -0.1561399958579265
+      rotation -0.656422344766277 -0.7543921826843808 -0.0014628725982322331 -2.296300348298636e-08
+      name "maze wall custom(12)"
+      length 0.4
+    }
+    MazeWall {
+      translation -1.06152999979445 0.14988463444807532 -1.3103099821056072
+      rotation -0.9862904877815228 -0.16501810885555745 -0.00031218811857698723 -1.0486438724485189e-07
+      name "maze wall custom(15)"
+      length 0.49
+    }
+    MazeWall {
+      translation -0.6797129997637699 0.14986815364384032 -0.5886719588138905
+      rotation -0.9977504078213012 -0.0670381505347632 -0.00010032599670087845 -2.5668953465036244e-07
+      name "maze wall custom(16)"
+      length 0.56
+    }
+    MazeWall {
+      translation 0.8477730002489094 0.1498610904461459 -1.282519945033277
+      rotation -0.9987795614412401 -0.04939010242770564 -7.368463101359947e-05 -3.4729727513182634e-07
+      name "maze wall custom(17)"
+      length 0.59
+    }
+    MazeWall {
+      translation 1.45000000024891 0.14986109044614587 -1.282519945033277
+      rotation -0.9987795614411192 -0.049390102430170814 -7.368461973408737e-05 -3.472972751080666e-07
+      name "maze wall custom(18)"
+      length 0.59
+    }
+    MazeWall {
+      translation -1.133000043744578 0.14986344484537778 0.5369999750268746
+      rotation 9.138263524212312e-08 -0.9999999999999833 1.583081008431586e-07 2.0943902889283548
+      name "maze wall custom(8)"
+      length 0.58
+    }
+    MazeWall {
+      translation -1.6070000070169779 0.14989640644321714 0.4768629961615216
+      rotation 1.1325269022497285e-08 -0.9999999999999997 1.9654149770991358e-08 2.0943902887661756
+      name "maze wall custom(9)"
+      length 0.44
+    }
+    MazeWall {
+      translation 0.7129869905820382 0.149889343246135 -0.6842270091392384
+      rotation 1.4967999785702288e-08 -0.9999999999999992 3.6182273510706025e-08 2.35619028877918
+      name "maze wall custom(22)"
+      length 0.47
+    }
+    MazeWall {
+      translation -1.6264500068326977 0.14989640644321714 0.07818760415765795
+      rotation 3.400908731754657e-08 -0.9999999999999994 1.967330878196849e-08 1.0471902887661753
+      name "maze wall custom(10)"
+      length 0.44
+    }
+    MazeWall {
+      translation -1.4952389060386697 0.1497786864538077 -0.5752536311528039
+      rotation -7.319757325959263e-06 -0.999999999964281 -4.22600604420944e-06 1.0471902898536172
+      name "maze wall custom(11)"
+      length 0.94
+    }
+    MazeWall {
+      translation -1.1386500628106355 0.14984931844998683 -0.8712979634239111
+      rotation 4.0108432640172926e-07 -0.9999999999998928 2.3159347002629589e-07 1.0471902890516398
+      name "maze wall custom(13)"
+      length 0.64
+    }
+    MazeWall {
+      translation 0.08706041834704704 0.1498069392511114 -0.04099999965553909
+      rotation -7.418123845585899e-07 -0.9999999999994499 -7.417877600569237e-07 1.5707896772990266
+      name "maze wall custom(5)"
+      length 0.82
+    }
+    MazeWall {
+      translation 0.08705201834704705 0.1498069392511114 -0.8819999996555392
+      rotation -7.418123845577214e-07 -0.9999999999994499 -7.417877600531302e-07 1.5707896772990266
+      name "maze wall custom(6)"
+      length 0.82
+    }
+    MazeWall {
+      translation -0.8256100690794753 0.14983990085307544 -0.9491589997127657
+      rotation 2.1881318439768892e-07 -0.999999999999952 2.188368957963595e-07 1.5707896769425997
+      name "maze wall custom(19)"
+      length 0.68
+    }
+    MazeWall {
+      translation -0.37798205598513246 0.14983519205463067 -1.3928299997044729
+      rotation 1.7480021317137214e-07 -0.9999999999999695 1.7482413203965219e-07 1.570789676990669
+      name "maze wall custom(20)"
+      length 0.7
+    }
+    MazeWall {
+      translation -0.36919252708471667 0.1497975216531225 -0.16842799964066232
+      rotation -1.5910906357688648e-06 -0.9999999999974685 -1.591060471827314e-06 1.5707896774079857
+      name "maze wall custom(21)"
+      length 0.86
+    }
+    MazeWall {
+      translation -1.2961600004350657 0.14996939281575347 -1.223759999950949
+      rotation -2.919793086735036e-11 -1 1.9666136516030092e-11 1.5707896797631653
+      name "maze wall custom(14)"
+      length 0.13
+    }
+  ]
+}
+DEF BEACONS Group {
+  children [
+    DEF RED_CYL Solid {
+      translation 0.569462 0.19990189989303778 0.45661374459089454
+      rotation 1 1.1458742935671515e-08 -2.7488398237449537e-09 4.709417993332912e-10
+      children [
+        DEF BCN_RED Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.4
+            radius 0.15
+          }
+        }
+      ]
+      boundingObject USE BCN_RED
+      physics DEF BCN_PHYS Physics {
+        density -1
+        mass 0.5
+      }
+      recognitionColors [
+        1 0 0
+      ]
+    }
+    DEF FCA_CYL Solid {
+      translation 1.45752 0.09990189990294591 -0.3285369380321926
+      rotation -1 5.576986593880058e-09 1.1120975277378021e-08 -5.273925081030528e-10
+      children [
+        DEF BCN_FCA Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.2
+            radius 0.2
+          }
+        }
+      ]
+      name "solid(2)"
+      boundingObject USE BCN_FCA
+      physics USE BCN_PHYS
+      recognitionColors [
+        1 0 1
+      ]
+    }
+    DEF TEAL_BOX Solid {
+      translation -0.5269729995829409 0.19990190005673925 1.484180000417059
+      rotation 0.707106793237546 3.082303561681231e-08 -0.7071067691355482 -1.1315547961974516e-10
+      children [
+        DEF BCN_TEAL Shape {
+          appearance PBRAppearance {
+            baseColor 0 0.5 0.5
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.45 0.4 0.45
+          }
+        }
+      ]
+      name "solid(1)"
+      boundingObject USE BCN_TEAL
+      physics USE BCN_PHYS
+      recognitionColors [
+        0 0.5 0.5
+      ]
+    }
+    DEF BLU_RECT Solid {
+      translation 1.5619000005705899 0.10990190004527181 1.3919799998876092
+      rotation -3.366036645223029e-11 0.9999999999999999 8.289033605146022e-11 1.5707996991396567
+      children [
+        DEF BCN_BLU Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0.5
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.6 0.22 0.25
+          }
+        }
+      ]
+      name "solid(4)"
+      boundingObject USE BCN_BLU
+      physics USE BCN_PHYS
+      recognitionColors [
+        0 0 0.5
+      ]
+    }
+  ]
+}
+StartZone {
+  translation -1.03729 0 1.48256
+  rotation 0 1 0 -1.5707996938995747
+  colour 0 0 0.5
+  name "start zone C"
+  recColSlot [
+    0 0 0.5
+  ]
+}
+WebotRobot {
+  hidden translation_6 -0.09 -0.01 0
+  hidden translation_7 0.09 -0.01 0
+  translation -1.04 0.0298633 1.48
+  rotation 0 0.9999999999999999 0 -1.57
+  controller "firefly_controller_pid"
+}

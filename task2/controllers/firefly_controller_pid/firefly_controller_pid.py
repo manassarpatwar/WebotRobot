@@ -11,8 +11,8 @@ camera.enable(TIME_STEP)
 keyboard = Keyboard()
 keyboard.enable(10)
 
-MAX_SPEED = 25.0
-MAX_TURN_SPEED = 25.0
+MAX_SPEED = 50.0
+MAX_TURN_SPEED = 50.0
 
 class Wheel:
     def __init__(self, name, robot):
@@ -27,6 +27,8 @@ class Firefly:
 
         self.leftWheel = Wheel('left wheel sensor', self.robot)
         self.rightWheel = Wheel('right wheel sensor', self.robot)
+        
+        self.motor_limit = self.leftWheel.motor.getMaxVelocity()
 
         self.lidar = self.robot.getLidar("lidar")
         self.lidar.enable(TIME_STEP)
@@ -36,9 +38,9 @@ class Firefly:
         self.error_prior = 0.0
         self.integral = 0.0
         
-        self.KP = 100
-        self.KI = 0
-        self.KD = 20
+        self.KP = 400
+        self.KI = 2
+        self.KD = 500
         
     def getDistances(self):
         self.distances = np.array(self.lidar.getRangeImage())
@@ -53,29 +55,30 @@ class Firefly:
         left_sensor = left_distances[np.where(np.logical_and(left_distances >= left_min, left_distances < left_min+0.05))]
         left_sensor = np.mean(left_sensor)
         
-        threshold = 0.275
+        threshold = 0.22
         error = threshold-left_sensor
-        self.integral += error
-        derivative = (error - self.error_prior)
+        self.integral += error/TIME_STEP
+        derivative = (error - self.error_prior)/TIME_STEP
         output = self.KP*error + self.KI*self.integral + self.KD*derivative
         
         self.error_prior = error
-        front_sensor = self.distances[89]
-        factor = np.interp(front_sensor, [threshold, 0.5], [0.1,1])
+        front_sensor = np.min(self.distances[60:120])
+        factor = np.interp(front_sensor, [threshold, 0.5], [0.5,1])
 
         if not self.turning:
             if front_sensor > threshold:
-                self.leftWheel.motor.setVelocity(MAX_SPEED*factor+output)
-                self.rightWheel.motor.setVelocity(MAX_SPEED*factor-output)
+                self.leftWheel.motor.setVelocity(np.clip(MAX_SPEED*factor+output, a_min = -self.motor_limit, a_max = self.motor_limit))
+                self.rightWheel.motor.setVelocity(np.clip(MAX_SPEED*factor-output, a_min = -self.motor_limit, a_max = self.motor_limit))
             else:
                 self.stop()
                 self.turning = True
         else:
             while front_sensor < threshold:
                 self.getDistances()
-                front_sensor = self.distances[89]
-                self.leftWheel.motor.setVelocity(MAX_TURN_SPEED)
-                self.rightWheel.motor.setVelocity(-MAX_TURN_SPEED)
+                front_sensor = np.min(self.distances[60:120])
+                factor = 1-np.interp(front_sensor, [threshold, 0.5], [0,1])
+                self.leftWheel.motor.setVelocity(MAX_TURN_SPEED*factor)
+                self.rightWheel.motor.setVelocity(-MAX_TURN_SPEED*factor)
                 self.robot.step(TIME_STEP)
             self.turning = False
     
