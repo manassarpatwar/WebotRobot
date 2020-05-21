@@ -57,21 +57,26 @@ class Firefly:
                         [0.5,0,0.5],
                         [1,0,1]]
         self.target_color = None
-        
+        self.moveToBeacon = False
         self.done = False
+        self.seconds = 0
         
         
     def getTargetColor(self):
-        while self.target_color is None:
-            objs = self.camera.getRecognitionObjects()
-            if len(objs) > 0:
-                potential_target = objs[0].get_colors()
-                if any(potential_target == c for c in self.colors):
-                    self.target_color = potential_target
-            self.turn()
-
         self.getDistances()
-        front_sensor = np.min(self.distances[60:120])
+        front_sensor = self.distances[89]
+        while self.target_color is None:
+            self.getDistances()
+            front_sensor = self.distances[89]
+            if front_sensor < 0.25:
+                objs = self.camera.getRecognitionObjects()
+                if len(objs) > 0:
+                    potential_target = objs[0].get_colors()
+                    if any(potential_target == c for c in self.colors):
+                        self.target_color = potential_target
+            self.turn(1)
+
+
         while front_sensor < 0.5:
             self.getDistances()
             front_sensor = np.min(self.distances[60:120])
@@ -79,11 +84,16 @@ class Firefly:
             self.turn(factor)
         self.stop()
     
-    def turn(self, factor=1):
-            self.leftWheel.motor.setVelocity(MAX_TURN_SPEED*factor)
-            self.rightWheel.motor.setVelocity(-MAX_TURN_SPEED*factor)
-            self.robot.step(TIME_STEP)
-    
+    def turn(self, factor=1, dir=1):
+        self.leftWheel.motor.setVelocity(MAX_TURN_SPEED*factor*dir)
+        self.rightWheel.motor.setVelocity(-MAX_TURN_SPEED*factor*dir)
+        self.robot.step(TIME_STEP)
+            
+    def forward(self, factor=1, leftFactor = 1, rightFactor=1):
+        self.leftWheel.motor.setVelocity(MAX_TURN_SPEED*factor*leftFactor)
+        self.rightWheel.motor.setVelocity(MAX_TURN_SPEED*factor*rightFactor)
+        self.robot.step(TIME_STEP)
+        
     def getDistances(self):
         self.distances = np.array(self.lidar.getRangeImage())
             
@@ -92,47 +102,80 @@ class Firefly:
         self.rightWheel.motor.setVelocity(0.0)
         
     def move(self):
-        left_distances = self.distances[0:60]
-        left_min = np.min(left_distances)
-        left_sensor = left_distances[np.where(np.logical_and(left_distances >= left_min, left_distances < left_min+0.05))]
-        left_sensor = np.mean(left_sensor)
-        
-        error = self.threshold-left_sensor
-        self.integral += error/TIME_STEP
-        derivative = (error - self.error_prior)/TIME_STEP
-        output = self.KP*error + self.KI*self.integral + self.KD*derivative
-        
-        self.error_prior = error
-        front_sensor = np.min(self.distances[60:120])
-        factor = np.interp(front_sensor, [self.threshold, 0.5], [0.5,1])
-
-        if not self.turning:
-            if front_sensor > self.threshold:
-                self.leftWheel.motor.setVelocity(np.clip(MAX_SPEED*factor+output, a_min = -self.motor_limit, a_max = self.motor_limit))
-                self.rightWheel.motor.setVelocity(np.clip(MAX_SPEED*factor-output, a_min = -self.motor_limit, a_max = self.motor_limit))
-            else:
+        self.seconds+=1
+        if self.moveToBeacon:
+            self.getDistances()
+            front_sensor = np.mean(self.distances[75:105])
+            sensors = self.distances[[75,105]]
+            front_factor = np.interp(front_sensor, [self.threshold, 0.5], [0,1])
+         
+            if front_sensor < self.threshold+0.05:
                 self.stop()
-                objs = self.camera.getRecognitionObjects()
-                if len(objs) > 0:
-                    obj_colors = [o.get_colors() for o in objs]
-                    if any(c == self.target_color for c in obj_colors):
-                        self.done = True
-                self.turning = True
+                self.done = True
+            elif sensors[0] < self.threshold:
+                self.turn(factor=0.1, dir=1)
+            elif sensors[1] < self.threshold:
+                self.turn(factor=0.1, dir=-1)
+            else:
+                self.forward(front_factor)
         else:
-            while front_sensor < self.threshold:
-                self.getDistances()
-                front_sensor = np.min(self.distances[60:120])
-                factor = 1-np.interp(front_sensor, [self.threshold, 0.5], [0,1])
-                self.turn(factor)
-            self.turning = False
+            left_distances = self.distances[0:60]
+            left_min = np.min(left_distances)
+            left_sensor = left_distances[np.where(np.logical_and(left_distances >= left_min, left_distances < left_min+0.05))]
+            left_sensor = np.mean(left_sensor)
+            
+            error = self.threshold-left_sensor
+            self.integral += error/TIME_STEP
+            derivative = (error - self.error_prior)/TIME_STEP
+            output = self.KP*error + self.KI*self.integral + self.KD*derivative
+            
+            self.error_prior = error
+            front_sensor = np.min(self.distances[60:120])
+            factor = np.interp(front_sensor, [self.threshold, 0.5], [0.5,1])
     
+            if not self.turning:
+                if front_sensor > self.threshold:
+                    self.leftWheel.motor.setVelocity(np.clip(MAX_SPEED*factor+output, a_min = -self.motor_limit, a_max = self.motor_limit))
+                    self.rightWheel.motor.setVelocity(np.clip(MAX_SPEED*factor-output, a_min = -self.motor_limit, a_max = self.motor_limit))
+                else:
+                    self.stop()
+                    self.turning = True
+            else:
+                while front_sensor < self.threshold:
+                    self.getDistances()
+                    front_sensor = np.min(self.distances[60:120])
+                    factor = 1-np.interp(front_sensor, [self.threshold, 0.5], [0,1])
+                    self.turn(factor=factor, dir=1)
+                self.turning = False
+                
+    def getBeacon(self):
+        objs = self.camera.getRecognitionObjects()
+        if len(objs) > 0:
+            for o in objs:
+                if o.get_colors() == self.target_color:
+                    return o
+                    
+        return None
+    def checkBeacon(self):
+        if self.seconds > 100:
+            beacon = self.getBeacon()
+            if beacon is not None:
+                x = beacon.get_position_on_image()[0]/self.camera.getWidth()
+                while not self.moveToBeacon:
+                    beacon = self.getBeacon()
+                    if beacon is not None:
+                        x = beacon.get_position_on_image()[0]/self.camera.getWidth()
+                        self.turn(factor=x*2-1, dir=1)
+                        if abs(x*2-1) < 0.01:
+                            self.moveToBeacon = True
+                    else:
+                        break
 
 firefly = Firefly(robot)
 firefly.getTargetColor()
-# firefly.target_color = [0,0.5,0.5]
 print(firefly.target_color)
 while firefly.robot.step(TIME_STEP) != -1:
     if not firefly.done:
         firefly.getDistances()    
         firefly.move()
-   
+        firefly.checkBeacon()

@@ -7,5 +7,5 @@ centralWidgetVisible: 1
 selectionDisabled: 0
 viewpointLocked: 0
 orthographicViewHeight: 1
-textFiles: 1 "controllers/firefly_controller_manas/firefly_controller_manas.py" "protos/WebotRobot.proto" "controllers/my_controller/my_controller.py" "controllers/firefly_controller_pid/firefly_controller_pid.py"
+textFiles: 3 "controllers/firefly_controller_manas/firefly_controller_manas.py" "protos/WebotRobot.proto" "controllers/my_controller/my_controller.py" "controllers/firefly_controller_pid/firefly_controller_pid.py"
 renderingDevicePerspectives: robot:camera;1;1;0;0

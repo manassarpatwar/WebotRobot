@@ -3,9 +3,9 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.1674676704475642 0.9172227419591475 0.36146510341637267 3.945251871444142
-  position -5.265476670406904 5.8331712816708015 -4.0128744920421155
-  followType "Pan and Tilt Shot"
+  orientation -0.34026979965631854 -0.8847927636398857 -0.31836807134563966 1.6266384476176896
+  position -8.30042524333681 7.065609632672895 -0.14317034943287138
+  follow "robot"
 }
 TexturedBackground {
 }
@@ -76,26 +76,26 @@ DEF ARENA_WALLS Group {
 DEF MAZE_WALLS Group {
   children [
     MazeWall {
-      translation -1.357 0.15 0.779
-      rotation 0 -1 0 -5.307179586466759e-06
+      translation -1.3569999996801965 0.14982342000000004 0.7790000038316295
+      rotation -2.258313195657827e-05 -0.9999999997450012 4.773842831827981e-11 -5.323963539811643e-06
       name "maze wall custom(30)"
       length 0.75
     }
     MazeWall {
-      translation -0.401 0.15 -0.574
-      rotation 0 -1 0 -5.307179586466759e-06
+      translation -0.4010286619840195 0.1497763310428096 -0.5723830338886644
+      rotation 0.03748218430342954 -0.9992972940531759 6.291140221051364e-05 0.0033593782108759266
       name "maze wall custom(1)"
       length 0.95
     }
     MazeWall {
-      translation 0.467 0.15 -0.276
-      rotation 0 -1 0 0.6544936938995747
+      translation 0.4670000004092002 0.149776332 -0.27599999987212026
+      rotation -4.9424146690161704e-08 -0.9999999999999987 -1.6777104995429886e-08 0.6544936776489647
       name "maze wall custom(2)"
       length 0.95
     }
     MazeWall {
-      translation 0.848 0.15 0.302
-      rotation 0 -1 0 1.5707896938995747
+      translation 0.8479999972934126 0.14987050800000004 0.3020000002358867
+      rotation -2.39431109601681e-11 -1 -2.3942928088199675e-11 1.5707896766748217
       name "maze wall custom(3)"
       length 0.55
     }
@@ -110,7 +110,8 @@ DEF MAZE_WALLS Group {
 DEF BEACONS Group {
   children [
     DEF RED_CYL Solid {
-      translation -0.0759672 0.2 -0.285755
+      translation -0.0759672 0.1999018999999999 -0.2857552554091055
+      rotation 0.9999999999999993 3.9191245394429295e-08 1.601975668922441e-09 4.709420161178968e-10
       children [
         DEF BCN_RED Shape {
           appearance PBRAppearance {
@@ -134,7 +135,8 @@ DEF BEACONS Group {
       ]
     }
     DEF FCA_CYL Solid {
-      translation -0.356726 0.1 -1.51029
+      translation -0.356726 0.0999018999999999 -1.510481938032193
+      rotation 1 1.5051544910269037e-08 4.240525912124413e-09 5.273927256485808e-10
       children [
         DEF BCN_FCA Shape {
           appearance PBRAppearance {
@@ -156,7 +158,8 @@ DEF BEACONS Group {
       ]
     }
     DEF TEAL_BOX Solid {
-      translation 1.45023 0.2 1.47189
+      translation 1.4502300004130466 0.19990190000000008 1.4718900004130466
+      rotation 0.7071067738453325 4.547616750951087e-08 -0.7071067885277611 -1.4152697644192498e-10
       children [
         DEF BCN_TEAL Shape {
           appearance PBRAppearance {
@@ -177,8 +180,8 @@ DEF BEACONS Group {
       ]
     }
     DEF GRN_RECT Solid {
-      translation 0.701167 0.15 -0.375253
-      rotation 0 1 0 -0.6544996938995746
+      translation 0.7011669997513226 0.14990190000000006 -0.3752529993920828
+      rotation 2.470268737033419e-16 1 -2.8525809512682064e-17 -0.6544996898249799
       children [
         DEF BCN_GRN Shape {
           appearance PBRAppearance {
@@ -199,8 +202,8 @@ DEF BEACONS Group {
       ]
     }
     DEF BLU_RECT Solid {
-      translation -1.42411 0.11 0.336374
-      rotation 0 1 0 1.0471996938995747
+      translation -1.4241099994358501 0.10990190000000004 0.33637400018968283
+      rotation -8.609370240578355e-17 1 1.0005386527866579e-16 1.047199699139656
       children [
         DEF BCN_BLU Shape {
           appearance PBRAppearance {
@@ -247,4 +250,13 @@ StartZone {
   recColSlot [
     0 0 0.5
   ]
+}
+WebotRobot {
+  hidden position_0_0 432.45452828409935
+  hidden position_0_1 487.045913849634
+  hidden rotation_6 0.45882403945088235 -0.45882572480874884 -0.760893852699377 4.442462704743199
+  hidden rotation_7 -0.706671672703196 0.7066740521446497 0.035027575199085045 3.0715663686578276
+  translation -1.47 0.0298647 1.49
+  rotation 2.218628169648725e-06 0.999999999995815 -1.856794067622489e-06 1.392666616460657
+  controller "firefly_controller_pid"
 }
