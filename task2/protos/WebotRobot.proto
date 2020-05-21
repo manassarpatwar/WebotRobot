@@ -8,6 +8,7 @@ PROTO WebotRobot [
   field SFFloat    minRange             0.1
   field SFFloat    maxRange             0.5
   field SFFloat    maxVelocity          100.0
+  field SFFloat    fieldOfView          0.3
 ]
 {
   Robot {
@@ -39,7 +40,7 @@ PROTO WebotRobot [
           }
         ]
         recognition Recognition {}
-        fieldOfView 1
+        fieldOfView IS fieldOfView
         width 188
         height 120
         far 0.4

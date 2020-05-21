@@ -42,6 +42,8 @@ class Firefly:
         self.KI = 2
         self.KD = 500
         
+        self.threshold = 0.22
+        
         self.colors = [[0.5,0,0], 
                         [1,0,0], 
                         [0.5,0.5,0],
@@ -56,21 +58,26 @@ class Firefly:
                         [1,0,1]]
         self.target_color = None
         
+        self.done = False
+        
         
     def getTargetColor(self):
         while self.target_color is None:
             objs = self.camera.getRecognitionObjects()
             if len(objs) > 0:
                 potential_target = objs[0].get_colors()
-                if potential_target in self.colors:
+                if any(potential_target == c for c in self.colors):
                     self.target_color = potential_target
             self.turn()
+
+        self.getDistances()
         front_sensor = np.min(self.distances[60:120])
-        while front_sensor < threshold:
+        while front_sensor < 0.5:
             self.getDistances()
             front_sensor = np.min(self.distances[60:120])
-            factor = 1-np.interp(front_sensor, [threshold, 0.5], [0,1])
+            factor = 1-np.interp(front_sensor, [self.threshold, 0.5], [0,1])
             self.turn(factor)
+        self.stop()
     
     def turn(self, factor=1):
             self.leftWheel.motor.setVelocity(MAX_TURN_SPEED*factor)
@@ -90,36 +97,42 @@ class Firefly:
         left_sensor = left_distances[np.where(np.logical_and(left_distances >= left_min, left_distances < left_min+0.05))]
         left_sensor = np.mean(left_sensor)
         
-        threshold = 0.22
-        error = threshold-left_sensor
+        error = self.threshold-left_sensor
         self.integral += error/TIME_STEP
         derivative = (error - self.error_prior)/TIME_STEP
         output = self.KP*error + self.KI*self.integral + self.KD*derivative
         
         self.error_prior = error
         front_sensor = np.min(self.distances[60:120])
-        factor = np.interp(front_sensor, [threshold, 0.5], [0.5,1])
+        factor = np.interp(front_sensor, [self.threshold, 0.5], [0.5,1])
 
         if not self.turning:
-            if front_sensor > threshold:
+            if front_sensor > self.threshold:
                 self.leftWheel.motor.setVelocity(np.clip(MAX_SPEED*factor+output, a_min = -self.motor_limit, a_max = self.motor_limit))
                 self.rightWheel.motor.setVelocity(np.clip(MAX_SPEED*factor-output, a_min = -self.motor_limit, a_max = self.motor_limit))
             else:
                 self.stop()
+                objs = self.camera.getRecognitionObjects()
+                if len(objs) > 0:
+                    obj_colors = [o.get_colors() for o in objs]
+                    if any(c == self.target_color for c in obj_colors):
+                        self.done = True
                 self.turning = True
         else:
-            while front_sensor < threshold:
+            while front_sensor < self.threshold:
                 self.getDistances()
                 front_sensor = np.min(self.distances[60:120])
-                factor = 1-np.interp(front_sensor, [threshold, 0.5], [0,1])
+                factor = 1-np.interp(front_sensor, [self.threshold, 0.5], [0,1])
                 self.turn(factor)
             self.turning = False
     
 
 firefly = Firefly(robot)
-# firefly.getTargetColor()
-# print(firefly.target_color)
+firefly.getTargetColor()
+# firefly.target_color = [0,0.5,0.5]
+print(firefly.target_color)
 while firefly.robot.step(TIME_STEP) != -1:
-    firefly.getDistances()    
-    firefly.move()
+    if not firefly.done:
+        firefly.getDistances()    
+        firefly.move()
    
