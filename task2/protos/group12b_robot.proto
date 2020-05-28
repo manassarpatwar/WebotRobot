@@ -1,5 +1,5 @@
 PROTO group12b_robot [
-  field SFVec3f    translation          -1.523 0.03 1.535
+  field SFVec3f    translation          0 0.03 0
   field SFRotation rotation             0 1 0 3.14
   field SFFloat    bodyMass             1
   field SFString   controller           "group12b_controller"

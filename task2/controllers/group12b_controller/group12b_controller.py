@@ -5,9 +5,6 @@ import numpy as np
 TIME_STEP = 64
 robot = Robot()
 
-keyboard = Keyboard()
-keyboard.enable(10)
-
 MAX_SPEED = 40.0
 MAX_TURN_SPEED = 40.0
 
@@ -90,9 +87,15 @@ class Firefly:
         self.robot.step(TIME_STEP)
             
     def forward(self, factor=1, leftFactor = 1, rightFactor=1):
-        self.leftWheel.motor.setVelocity(MAX_TURN_SPEED*factor*leftFactor)
-        self.rightWheel.motor.setVelocity(MAX_TURN_SPEED*factor*rightFactor)
+        self.leftWheel.motor.setVelocity(MAX_SPEED*factor*leftFactor)
+        self.rightWheel.motor.setVelocity(MAX_SPEED*factor*rightFactor)
         self.robot.step(TIME_STEP)
+        
+    def forward_carefully(self):
+        self.getDistances()
+        front_sensor = np.mean(self.distances[75:105])
+        front_factor = np.interp(front_sensor, [self.threshold, 0.5], [0,1])
+        self.forward(front_factor)
         
     def getDistances(self):
         self.distances = np.array(self.lidar.getRangeImage())
@@ -105,19 +108,14 @@ class Firefly:
         self.seconds+=1
         if self.moveToBeacon:
             self.getDistances()
-            front_sensor = np.mean(self.distances[75:105])
-            sensors = self.distances[[75,105]]
-            front_factor = np.interp(front_sensor, [self.threshold, 0.5], [0,1])
-         
-            if front_sensor < self.threshold+0.05:
+            self.forward_carefully() 
+            beacon = self.getBeacon()
+
+            if beacon is not None and beacon.get_size_on_image()[1]/self.camera.getHeight() > 0.99:
+                for i in range(10):
+                    self.forward_carefully()
                 self.stop()
                 self.done = True
-            elif sensors[0] < self.threshold:
-                self.turn(factor=0.1, dir=1)
-            elif sensors[1] < self.threshold:
-                self.turn(factor=0.1, dir=-1)
-            else:
-                self.forward(front_factor)
         else:
             left_distances = self.distances[0:60]
             left_min = np.min(left_distances)
@@ -159,20 +157,22 @@ class Firefly:
     def checkBeacon(self):
         if self.seconds > 100:
             beacon = self.getBeacon()
-            if beacon is not None:
-                x = beacon.get_position_on_image()[0]/self.camera.getWidth()
+            if beacon is not None and beacon.get_size_on_image()[0] > self.camera.getWidth()*0.5:
                 while not self.moveToBeacon:
                     beacon = self.getBeacon()
                     if beacon is not None:
                         x = beacon.get_position_on_image()[0]/self.camera.getWidth()
-                        self.turn(factor=x*2-1, dir=1)
-                        if abs(x*2-1) < 0.01:
+                        factor = np.interp(x, [0, 1], [-0.2,0.2])
+                        self.turn(factor=factor, dir=1)
+                        if abs(x-0.5) < 0.001:
                             self.moveToBeacon = True
                     else:
                         break
 
 firefly = Firefly(robot)
+firefly.robot.step(TIME_STEP)
 firefly.getTargetColor()
+
 print(firefly.target_color)
 while firefly.robot.step(TIME_STEP) != -1:
     if not firefly.done:
