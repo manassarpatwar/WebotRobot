@@ -1,4 +1,4 @@
-from controller import Robot, Keyboard
+from controller import Robot
 import math
 import numpy as np
 
@@ -60,6 +60,7 @@ class Firefly:
         
         
     def getTargetColor(self):
+        self.robot.step(TIME_STEP)
         self.getDistances()
         front_sensor = self.distances[89]
         while self.target_color is None:
@@ -170,9 +171,7 @@ class Firefly:
                         break
 
 firefly = Firefly(robot)
-firefly.robot.step(TIME_STEP)
 firefly.getTargetColor()
-
 print(firefly.target_color)
 while firefly.robot.step(TIME_STEP) != -1:
     if not firefly.done:
