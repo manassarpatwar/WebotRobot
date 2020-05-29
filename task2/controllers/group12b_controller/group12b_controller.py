@@ -113,7 +113,7 @@ class Firefly:
             beacon = self.getBeacon()
 
             if beacon is not None and beacon.get_size_on_image()[1]/self.camera.getHeight() > 0.99:
-                for i in range(10):
+                for i in range(1000):
                     self.forward_carefully()
                 self.stop()
                 self.done = True
@@ -156,9 +156,9 @@ class Firefly:
                     
         return None
     def checkBeacon(self):
-        if self.seconds > 100:
+        if self.seconds > 50:
             beacon = self.getBeacon()
-            if beacon is not None and beacon.get_size_on_image()[0] > self.camera.getWidth()*0.5:
+            if beacon is not None:
                 while not self.moveToBeacon:
                     beacon = self.getBeacon()
                     if beacon is not None:
